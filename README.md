@@ -125,8 +125,12 @@ http://127.0.0.1:8000/
 ```
 
 ## 📸 Screenshots
+<img width="1919" height="917" alt="image" src="https://github.com/user-attachments/assets/d8b45b99-3570-4af4-add2-e55958df18fd" />
+<img width="1913" height="910" alt="image" src="https://github.com/user-attachments/assets/c22266aa-07d1-4d1f-8c88-516ce243b7d0" />
+<img width="1908" height="842" alt="image" src="https://github.com/user-attachments/assets/04541e50-79e0-488a-a4cb-9d4277a1c638" />
 
-Screenshots of the application interface will be added soon.
+
+
 
 ## 🎯 Learning Objectives
 
