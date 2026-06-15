@@ -1,66 +1,159 @@
-# task-management-system
+# TaskFlow - Task Management System
 
-A modern task management application designed to help users organize, prioritize, and track their daily tasks efficiently.
+TaskFlow is a web-based Task Management System developed using Django that helps users efficiently create, organize, update, and track their daily tasks. The application provides a clean and user-friendly interface for managing personal productivity and task workflows.
 
-## 🚀 Project Status
+## 🚀 Features
 
-🚧 **Currently Under Development**
+* Create new tasks
+* View all tasks
+* Update existing tasks
+* Delete completed or unwanted tasks
+* User profile management
+* Responsive and intuitive interface
+* Django-powered backend architecture
+* Template inheritance for efficient UI development
 
-This repository is being actively developed. Features, documentation, and source code will be added progressively.
+## 🛠️ Technologies Used
 
-## 📌 Overview
-
-The Task Management System aims to provide a simple and intuitive platform for managing tasks, improving productivity, and tracking progress. The application will enable users to create, update, organize, and monitor tasks through an easy-to-use interface.
-
-## ✨ Planned Features
-
-* User Authentication
-* Task Creation and Management
-* Task Prioritization
-* Due Date Tracking
-* Task Status Updates
-* Search and Filter Tasks
-* Responsive User Interface
-* Dashboard and Analytics
-
-## 🛠️ Technologies (Planned)
+### Backend
 
 * Python
 * Django
+
+### Frontend
+
 * HTML5
 * CSS3
-* Bootstrap
 * JavaScript
-* SQLite / MySQL
-* Git & GitHub
 
-## 📂 Repository Structure
+### Database
 
-The project structure and source code will be added soon.
+* SQLite
 
-## 🎯 Objectives
+### Version Control
 
-* Improve task organization and productivity
-* Learn and implement full-stack web development concepts
-* Practice database design and CRUD operations
-* Build a scalable and user-friendly application
+* Git
+* GitHub
 
-## 📅 Development Roadmap
+## 📂 Project Structure
 
-* [ ] Project Setup
-* [ ] Database Design
-* [ ] User Authentication
-* [ ] Task Management Features
-* [ ] UI Development
-* [ ] Testing & Bug Fixes
-* [ ] Deployment
+```text
+taskflow/
+├── base/
+│   ├── migrations/
+│   ├── templates/
+│   │   ├── home.html
+│   │   ├── read_task.html
+│   │   ├── update_task.html
+│   │   ├── delete_task.html
+│   │   └── profile.html
+│   ├── admin.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
+│   └── views.py
+│
+├── myproject/
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+│
+├── static/
+│   ├── css/
+│   └── js/
+│
+├── templates/
+│   ├── main.html
+│   └── nav.html
+│
+├── manage.py
+├── requirements.txt
+└── README.md
+```
+
+## ⚙️ Installation
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/taskflow.git
+```
+
+### Navigate to the Project Directory
+
+```bash
+cd taskflow
+```
+
+### Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### Activate the Virtual Environment
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Apply Migrations
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### Run the Development Server
+
+```bash
+python manage.py runserver
+```
+
+Open your browser and visit:
+
+```text
+http://127.0.0.1:8000/
+```
+
+## 📸 Screenshots
+
+Screenshots of the application interface will be added soon.
+
+## 🎯 Learning Objectives
+
+* Django Web Development
+* CRUD Operations
+* Database Integration
+* Template Inheritance
+* User Interface Design
+* Project Structure Organization
+* Git and GitHub Workflow
+
+## 🔮 Future Enhancements
+
+* User Authentication System
+* Task Prioritization
+* Task Categories
+* Due Date Reminders
+* Search and Filter Tasks
+* Dashboard Analytics
+* Dark Mode Support
 
 ## 👩‍💻 Author
 
-**Keerthana K R**
+Keerthana K R
 
-Engineering Student | Aspiring Web Developer
+Engineering Student | Aspiring Web Developer | Data Science Enthusiast
 
 ## 📄 License
 
-This project is intended for educational and learning purposes.
+This project is created for educational and portfolio purposes.
