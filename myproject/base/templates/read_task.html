@@ -1,0 +1,427 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* Welcome Section */
+    .welcome-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 35px 40px;
+        margin: 0;
+        color: white;
+    }
+
+    .welcome-section h1 {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .welcome-section p {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 30px 30px 0 30px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        transition: transform 0.3s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .stat-icon {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .stat-card h3 {
+        font-size: 32px;
+        font-weight: 800;
+        color: #2D3748;
+        margin-bottom: 5px;
+    }
+
+    .stat-card p {
+        color: #718096;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    /* Filters */
+    .filters-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin: 30px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #D53F8C;
+        box-shadow: 0 0 0 3px rgba(213, 63, 140, 0.1);
+    }
+
+    .filter-controls {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .filter-select {
+        flex: 1;
+        padding: 10px 14px;
+        border: 2px solid #E2E8F0;
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+    }
+
+    .btn-apply {
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #6B46C1 0%, #D53F8C 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-apply:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+    }
+
+    /* Tasks Grid */
+    .tasks-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 20px;
+        padding: 0 30px 30px 30px;
+    }
+
+    .task-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+    }
+
+    .task-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .task-priority {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .priority-critical { background: #FED7D7; color: #C53030; }
+    .priority-high { background: #FEEBC8; color: #C05621; }
+    .priority-medium { background: #FEFCBF; color: #975A16; }
+    .priority-low { background: #C6F6D5; color: #276749; }
+
+    .task-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2D3748;
+        margin-bottom: 8px;
+    }
+
+    .task-description {
+        color: #718096;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+    }
+
+    .progress-section {
+        margin: 12px 0;
+    }
+
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #718096;
+        margin-bottom: 6px;
+    }
+
+    .progress-bar {
+        background: #E2E8F0;
+        height: 6px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        background: linear-gradient(90deg, #6B46C1 0%, #D53F8C 100%);
+        height: 100%;
+        transition: width 0.3s;
+    }
+
+    .task-meta {
+        display: flex;
+        gap: 10px;
+        margin: 12px 0;
+        padding: 10px 0;
+        border-top: 1px solid #E2E8F0;
+        border-bottom: 1px solid #E2E8F0;
+        font-size: 11px;
+        color: #718096;
+        flex-wrap: wrap;
+    }
+
+    .task-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .btn-edit, .btn-delete {
+        flex: 1;
+        padding: 8px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-edit {
+        background: #EDF2F7;
+        color: #4A5568;
+    }
+
+    .btn-edit:hover {
+        background: #E2E8F0;
+    }
+
+    .btn-delete {
+        background: #FED7D7;
+        color: #C53030;
+    }
+
+    .btn-delete:hover {
+        background: #FCCACA;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 30px;
+        background: white;
+        border-radius: 16px;
+        margin: 0 30px 30px 30px;
+    }
+
+    .empty-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+        font-size: 20px;
+        color: #2D3748;
+        margin-bottom: 8px;
+    }
+
+    .empty-state p {
+        color: #718096;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 1024px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .welcome-section {
+            padding: 20px;
+        }
+        
+        .welcome-section h1 {
+            font-size: 22px;
+        }
+        
+        .stats-grid {
+            padding: 20px 16px 0 16px;
+            gap: 12px;
+        }
+        
+        .filters-card {
+            margin: 20px 16px;
+            padding: 15px;
+        }
+        
+        .tasks-grid {
+            padding: 0 16px 20px 16px;
+            gap: 12px;
+        }
+        
+        .empty-state {
+            margin: 0 16px 20px 16px;
+            padding: 40px 20px;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <h1>Welcome back, {{ user.first_name|default:user.username }}! 🎉</h1>
+        <p>Here's what's happening with your tasks today.</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <h3>{{ total_tasks|default:"0" }}</h3>
+            <p>Total Tasks</p>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <h3>{{ completed_tasks|default:"0" }}</h3>
+            <p>Completed</p>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">🔄</div>
+            <h3>{{ in_progress_tasks|default:"0" }}</h3>
+            <p>In Progress</p>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <h3>{{ overdue_tasks|default:"0" }}</h3>
+            <p>Overdue</p>
+        </div>
+    </div>
+
+    <div class="filters-card">
+        <form method="GET" action="{% url 'read_task' %}">
+            <input type="text" 
+                   name="q" 
+                   placeholder="🔍 Search tasks by title or description..." 
+                   value="{{ search|default:'' }}"
+                   class="search-input">
+            
+            <div class="filter-controls">
+                <select name="priority" class="filter-select">
+                    <option value="">All Priorities</option>
+                    {% for value, label in priority_choices %}
+                        <option value="{{ value }}" {% if priority_filter == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <select name="status" class="filter-select">
+                    <option value="">All Status</option>
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit" class="btn-apply">Apply Filters</button>
+                
+                {% if search or priority_filter or status_filter %}
+                    <a href="{% url 'read_task' %}" style="padding: 10px 20px; background: #EDF2F7; border-radius: 10px; text-decoration: none; color: #4A5568;">Clear</a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    {% if tasks %}
+        <div class="tasks-grid">
+            {% for task in tasks %}
+                <div class="task-card">
+                    <span class="task-priority priority-{{ task.priority }}">
+                        {% if task.priority == 'critical' %}🔴 CRITICAL
+                        {% elif task.priority == 'high' %}🟠 HIGH
+                        {% elif task.priority == 'medium' %}🟡 MEDIUM
+                        {% else %}🟢 LOW
+                        {% endif %}
+                    </span>
+                    
+                    <h3 class="task-title">{{ task.title }}</h3>
+                    <p class="task-description">{{ task.description|truncatechars:100 }}</p>
+                    
+                    <div class="progress-section">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <span>{{ task.progress }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ task.progress }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-meta">
+                        {% if task.estimated_hours %}
+                        <span>⏱️ {{ task.estimated_hours }} hrs</span>
+                        {% endif %}
+                        {% if task.due_date %}
+                        <span>📅 {{ task.due_date|date:"M d, Y" }}</span>
+                        {% endif %}
+                        <span>📌 {{ task.get_status_display }}</span>
+                    </div>
+                    
+                    <div class="task-actions">
+                        <a href="{% url 'update_task' task.id %}" class="btn-edit">✏️ Edit</a>
+                        <a href="{% url 'delete_task' task.id %}" class="btn-delete">🗑️ Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h3>No tasks found</h3>
+            <p>Get started by creating your first task!</p>
+            <a href="{% url 'home' %}" class="btn-apply" style="display: inline-block; text-decoration: none; margin-top: 15px;">Create Your First Task</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

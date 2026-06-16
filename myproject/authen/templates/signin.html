@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | TaskFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #6B46C1 0%, #D53F8C 100%);
+            color: white;
+            padding: 35px;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .login-form {
+            padding: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4A5568;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #D53F8C;
+            box-shadow: 0 0 0 3px rgba(213, 63, 140, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6B46C1 0%, #D53F8C 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #E2E8F0;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #D53F8C;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-error {
+            background: #FED7D7;
+            color: #C53030;
+            border-left: 4px solid #C53030;
+        }
+
+        .alert-success {
+            background: #C6F6D5;
+            color: #276749;
+            border-left: 4px solid #276749;
+        }
+
+        .alert-info {
+            background: #FEEBC8;
+            color: #7B341E;
+            border-left: 4px solid #7B341E;
+        }
+
+        /* Demo Credentials */
+        .demo-box {
+            background: #F7FAFC;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 20px;
+            text-align: center;
+            border: 1px dashed #D53F8C;
+        }
+
+        .demo-box p {
+            font-size: 11px;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+
+        .demo-box code {
+            font-size: 12px;
+            color: #D53F8C;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .login-header {
+                padding: 25px;
+            }
+            
+            .login-form {
+                padding: 25px;
+            }
+            
+            .login-header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Welcome Back! 👋</h1>
+            <p>Sign in to manage your tasks</p>
+        </div>
+        
+        <div class="login-form">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <span>{% if message.tags == 'error' %}⚠️{% elif message.tags == 'success' %}✅{% else %}ℹ️{% endif %}</span>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST" action="{% url 'signin' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" 
+                           name="username" 
+                           class="form-control" 
+                           placeholder="Enter your username"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" 
+                           name="password" 
+                           class="form-control" 
+                           placeholder="Enter your password"
+                           required>
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="signup-link">
+                Don't have an account?
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </div>
+            
+            <!-- Demo Credentials (Remove in production) -->
+            <div class="demo-box">
+                <p>💡 Demo Credentials</p>
+                <code>Username: demo | Password: demo123</code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

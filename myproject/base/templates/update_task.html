@@ -1,0 +1,392 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .update-container {
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* Page Header */
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 35px 40px;
+        color: white;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .page-header p {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    /* Form Card */
+    .form-card {
+        background: white;
+        border-radius: 0 0 24px 24px;
+        padding: 40px;
+        margin: 0 20px 30px 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    /* Form Groups */
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4A5568;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+    }
+
+    .label-icon {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #D53F8C;
+        box-shadow: 0 0 0 3px rgba(213, 63, 140, 0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    select.form-control {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B46C1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 20px;
+    }
+
+    /* Two Column Layout */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* Read-only/Display Fields */
+    .readonly-field {
+        background: #F7FAFC;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 2px solid #E2E8F0;
+        color: #2D3748;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* Priority Badge */
+    .priority-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .priority-critical { background: #FED7D7; color: #C53030; }
+    .priority-high { background: #FEEBC8; color: #C05621; }
+    .priority-medium { background: #FEFCBF; color: #975A16; }
+    .priority-low { background: #C6F6D5; color: #276749; }
+
+    /* Status Badge */
+    .status-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    .status-pending { background: #FEEBC8; color: #C05621; }
+    .status-in_progress { background: #BEE3F8; color: #2C5282; }
+    .status-review { background: #E9D8FD; color: #6B46C1; }
+    .status-completed { background: #C6F6D5; color: #276749; }
+
+    /* Button Group */
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 35px;
+        padding-top: 20px;
+        border-top: 1px solid #E2E8F0;
+    }
+
+    .btn-update {
+        flex: 1;
+        padding: 14px 24px;
+        background: linear-gradient(135deg, #6B46C1 0%, #D53F8C 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-update:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+    }
+
+    .btn-cancel {
+        flex: 1;
+        padding: 14px 24px;
+        background: #EDF2F7;
+        color: #4A5568;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background: #E2E8F0;
+        transform: translateY(-2px);
+    }
+
+    /* Alert Messages */
+    .alert {
+        padding: 14px 18px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+    }
+
+    .alert-success {
+        background: #C6F6D5;
+        color: #276749;
+        border-left: 4px solid #276749;
+    }
+
+    .alert-error {
+        background: #FED7D7;
+        color: #C53030;
+        border-left: 4px solid #C53030;
+    }
+
+    /* Helper Text */
+    .helper-text {
+        font-size: 11px;
+        color: #718096;
+        margin-top: 6px;
+    }
+
+    /* Info Box */
+    .info-box {
+        background: #F7FAFC;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid #E2E8F0;
+    }
+
+    .info-icon {
+        font-size: 24px;
+    }
+
+    .info-text {
+        font-size: 13px;
+        color: #4A5568;
+    }
+
+    .info-text strong {
+        color: #2D3748;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header {
+            padding: 25px 20px;
+        }
+        
+        .page-header h1 {
+            font-size: 24px;
+        }
+        
+        .form-card {
+            padding: 25px;
+            margin: 0 16px 30px 16px;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        
+        .button-group {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="update-container">
+    <div class="page-header">
+        <h1>
+            <span>✏️</span> Edit Task
+        </h1>
+        <p>Update your task details below</p>
+    </div>
+
+    <div class="form-card">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <span>{% if message.tags == 'success' %}✅{% else %}⚠️{% endif %}</span>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Task Info Box -->
+        <div class="info-box">
+            <div class="info-icon">📌</div>
+            <div class="info-text">
+                <strong>Task ID: #{{ task.id }}</strong><br>
+                Created on {{ task.created_at|date:"F d, Y" }}
+            </div>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Title -->
+            <div class="form-group">
+                <label class="label-icon">
+                    <span>📝</span> Task Title
+                </label>
+                {{ form.title }}
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label class="label-icon">
+                    <span>📄</span> Description
+                </label>
+                {{ form.description }}
+            </div>
+
+            <!-- Row: Priority and Status -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="label-icon">
+                        <span>⚡</span> Priority
+                    </label>
+                    {{ form.priority }}
+                </div>
+
+                <div class="form-group">
+                    <label class="label-icon">
+                        <span>📊</span> Status
+                    </label>
+                    {{ form.status }}
+                </div>
+            </div>
+
+            <!-- Row: Estimated Hours and Due Date -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="label-icon">
+                        <span>⏰</span> Estimated Hours
+                    </label>
+                    {{ form.estimated_hours }}
+                </div>
+
+                <div class="form-group">
+                    <label class="label-icon">
+                        <span>📅</span> Due Date
+                    </label>
+                    {{ form.due_date }}
+                </div>
+            </div>
+
+            <!-- Assigned To -->
+            <div class="form-group">
+                <label class="label-icon">
+                    <span>👥</span> Assigned To
+                </label>
+                {{ form.assigned_to }}
+            </div>
+
+            <!-- Progress Display (Read-only) -->
+            <div class="form-group">
+                <label class="label-icon">
+                    <span>📈</span> Current Progress
+                </label>
+                <div class="readonly-field">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>{{ task.progress }}% Complete</span>
+                        <span>{% if task.status == 'completed' %}✅ Done{% elif task.status == 'in_progress' %}🔄 In Progress{% else %}⏳ Pending{% endif %}</span>
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <div style="background: #E2E8F0; height: 6px; border-radius: 10px; overflow: hidden;">
+                            <div style="background: linear-gradient(90deg, #6B46C1 0%, #D53F8C 100%); width: {{ task.progress }}%; height: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="helper-text">Progress updates automatically based on status</div>
+            </div>
+
+            <!-- Button Group -->
+            <div class="button-group">
+                <button type="submit" class="btn-update">
+                    💾 Save Changes
+                </button>
+                <a href="{% url 'read_task' %}" class="btn-cancel">
+                    ❌ Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
