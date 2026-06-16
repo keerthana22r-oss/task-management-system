@@ -2,7 +2,6 @@
 TaskFlow is a web-based Task Management System developed using Django that helps users efficiently create, organize, update, and track their daily tasks. The application provides a clean and user-friendly interface for managing personal productivity and task workflows.
 
 ## 🚀 Features
-
 * Create new tasks
 * View all tasks
 * Update existing tasks
