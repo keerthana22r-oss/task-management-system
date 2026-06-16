@@ -155,7 +155,6 @@ http://127.0.0.1:8000/
 ## 👩‍💻 Author
 
 Keerthana K R
-
 Engineering Student | Aspiring Web Developer | Data Science Enthusiast
 
 ## 📄 License
