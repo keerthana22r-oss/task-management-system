@@ -130,8 +130,6 @@ http://127.0.0.1:8000/
 <img width="1908" height="842" alt="image" src="https://github.com/user-attachments/assets/04541e50-79e0-488a-a4cb-9d4277a1c638" />
 
 
-
-
 ## 🎯 Learning Objectives
 
 * Django Web Development
