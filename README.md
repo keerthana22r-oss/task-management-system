@@ -154,5 +154,4 @@ Keerthana K R
 Engineering Student | Aspiring Web Developer | Data Science Enthusiast
 
 ## 📄 License
-
 This project is created for educational and portfolio purposes.
